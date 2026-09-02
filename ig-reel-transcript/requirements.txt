@@ -1,0 +1,2 @@
+instaloader
+faster-whisper

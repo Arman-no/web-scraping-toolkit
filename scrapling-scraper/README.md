@@ -7,18 +7,11 @@ LLM's context (not the raw page HTML).
 
 ## Setup
 
-### Fresh clone
-
 ```
 python -m venv .venv
 .venv\Scripts\pip.exe install -r requirements.txt
 .venv\Scripts\scrapling.exe install   # downloads Playwright's Chromium/WebKit binaries
 ```
-
-### This machine
-
-Already installed in `.venv` (Python 3.13, `scrapling[fetchers]`, Playwright
-Chromium/WebKit browser binaries). Nothing else to do.
 
 ## Usage
 

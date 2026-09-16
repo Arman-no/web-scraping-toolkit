@@ -6,8 +6,6 @@ needed, no external API, nothing uploaded anywhere).
 
 ## Setup
 
-### Fresh clone
-
 ```
 python -m venv .venv
 .venv\Scripts\pip.exe install -r requirements.txt
@@ -16,11 +14,6 @@ python -m venv .venv
 `faster-whisper` decodes audio itself via the bundled `av` (PyAV) library --
 no system ffmpeg required. The Whisper model weights download on first run
 (cached under your user profile afterward).
-
-### This machine
-
-Already installed in `.venv` (Python 3.13, `instaloader`, `faster-whisper`).
-Nothing else to do.
 
 ## Usage
 

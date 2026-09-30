@@ -61,5 +61,6 @@ uv run python example.py          # prints [Fetcher] status: 200 and the page ti
 | `UnicodeEncodeError: 'charmap' codec` | Windows console is cp1252 | `PYTHONIOENCODING=utf-8` |
 | `StealthyFetcher` fails to launch a browser | `scrapling install` never ran | `uv run scrapling install` |
 | Status `200` but the text is a challenge page | Bot wall answered with a normal status | Check the content, not the status; escalate one rung |
+| `TypeError: open() got an unexpected keyword argument 'metadata_errors'` | PyAV 19 dropped an argument faster-whisper 1.2.1 still passes | `av<19` is pinned in `ig-reel-transcript/pyproject.toml`; run `uv sync` |
 | `LoginRequiredException` / `PrivateProfileNotFollowedException` | Private or login-walled post | Not retrievable; report it |
 | `TooManyRequestsException` / `ConnectionException` | Instagram throttling the IP | Stop and wait; don't loop |

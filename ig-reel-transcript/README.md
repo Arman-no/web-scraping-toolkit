@@ -6,9 +6,11 @@ needed, no external API, nothing uploaded anywhere).
 
 ## Setup
 
+A [uv](https://docs.astral.sh/uv/) project: dependencies are in `pyproject.toml`,
+and the exact tested versions are in `uv.lock`.
+
 ```
-python -m venv .venv
-.venv\Scripts\pip.exe install -r requirements.txt
+uv sync                      # creates .venv with the locked versions
 ```
 
 `faster-whisper` decodes audio itself via the bundled `av` (PyAV) library --
@@ -18,19 +20,19 @@ no system ffmpeg required. The Whisper model weights download on first run
 ## Usage
 
 ```
-.venv\Scripts\python.exe transcribe_reel.py https://www.instagram.com/reel/SHORTCODE/
+uv run python transcribe_reel.py https://www.instagram.com/reel/SHORTCODE/
 ```
 
 or with a bare shortcode:
 
 ```
-.venv\Scripts\python.exe transcribe_reel.py SHORTCODE
+uv run python transcribe_reel.py SHORTCODE
 ```
 
 Optional model size (`tiny`/`base`/`small`/`medium`/`large-v3`), default `small`:
 
 ```
-.venv\Scripts\python.exe transcribe_reel.py SHORTCODE --model base
+uv run python transcribe_reel.py SHORTCODE --model base
 ```
 
 Only the final transcript text prints to stdout -- that's what should get

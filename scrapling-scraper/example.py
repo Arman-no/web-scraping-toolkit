@@ -1,8 +1,8 @@
 """
 Smoke-test / usage reference for Scrapling.
 
-Run with this folder's own venv:
-    .venv\\Scripts\\python.exe example.py
+Run from this folder (after `uv sync`):
+    uv run python example.py
 
 Three fetcher types, pick the cheapest one that works for the target site:
   - Fetcher        : plain HTTP request, no browser. Fast, use by default.

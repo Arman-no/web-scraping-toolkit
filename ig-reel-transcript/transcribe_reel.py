@@ -2,7 +2,7 @@
 Download an Instagram reel/post and transcribe its audio locally.
 
 Usage:
-    .venv\\Scripts\\python.exe transcribe_reel.py <reel_url_or_shortcode> [--model tiny|base|small|medium|large-v3]
+    uv run python transcribe_reel.py <reel_url_or_shortcode> [--model tiny|base|small|medium|large-v3]
 
 Pipeline:
     1. instaloader downloads the video (logged-out, public posts only).

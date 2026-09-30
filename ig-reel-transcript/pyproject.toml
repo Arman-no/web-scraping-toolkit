@@ -1,0 +1,12 @@
+[project]
+name = "ig-reel-transcript"
+version = "0.1.0"
+description = "Download a public Instagram reel and transcribe its audio locally (CPU only)"
+requires-python = ">=3.10"
+dependencies = [
+    "instaloader",
+    "faster-whisper",
+]
+
+[tool.uv]
+package = false  # a script with dependencies, not an installable package

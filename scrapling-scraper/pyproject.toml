@@ -1,0 +1,12 @@
+[project]
+name = "scrapling-scraper"
+version = "0.1.0"
+description = "Fetch pages a plain HTTP request can't (bot walls, JS-rendered SPAs) and extract markdown"
+requires-python = ">=3.10"
+dependencies = [
+    "scrapling[fetchers]",
+    "markdownify",  # needed by page.markdown(); not pulled in by scrapling[fetchers]
+]
+
+[tool.uv]
+package = false  # a script with dependencies, not an installable package

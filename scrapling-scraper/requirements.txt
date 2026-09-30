@@ -1,2 +1,0 @@
-scrapling[fetchers]
-markdownify

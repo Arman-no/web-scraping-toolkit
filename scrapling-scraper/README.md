@@ -7,16 +7,21 @@ LLM's context (not the raw page HTML).
 
 ## Setup
 
+A [uv](https://docs.astral.sh/uv/) project: dependencies are in `pyproject.toml`,
+and the exact tested versions are in `uv.lock`.
+
 ```
-python -m venv .venv
-.venv\Scripts\pip.exe install -r requirements.txt
-.venv\Scripts\scrapling.exe install   # downloads Playwright's Chromium/WebKit binaries
+uv sync                      # creates .venv with the locked versions
+uv run scrapling install     # downloads Playwright's Chromium/WebKit binaries
 ```
+
+`uv run scrapling install` is only needed for `StealthyFetcher`/`DynamicFetcher`;
+plain `Fetcher` works right after `uv sync`.
 
 ## Usage
 
 ```
-.venv\Scripts\python.exe example.py
+uv run python example.py
 ```
 
 See `example.py` for the three fetcher types:
@@ -33,6 +38,9 @@ over a plain fetch.
 ## Re-installing / updating
 
 ```
-.venv\Scripts\pip.exe install --upgrade scrapling
-.venv\Scripts\scrapling.exe install   # re-syncs browser binaries after an update
+uv lock --upgrade-package scrapling   # move the lock to the newest scrapling
+uv sync
+uv run scrapling install              # re-syncs browser binaries after an update
 ```
+
+Commit the changed `uv.lock` so everyone else gets the same versions.

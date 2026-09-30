@@ -8,8 +8,36 @@ request cannot get at:
 | [`scrapling-scraper/`](scrapling-scraper/) | Fetches pages that block plain requests — bot walls, Cloudflare, client-side-rendered SPAs — through a stealth browser, and extracts markdown or CSS matches instead of raw HTML. |
 | [`ig-reel-transcript/`](ig-reel-transcript/) | Downloads a public Instagram reel and transcribes its audio locally — CPU only, no API, nothing uploaded anywhere. |
 
-Each tool has its own virtualenv, its own `requirements.txt`, and its own
-README. They share no code.
+Each tool is its own [uv](https://docs.astral.sh/uv/) project, with its own
+`pyproject.toml`, a pinned `uv.lock` and its own README. They share no code, and each
+gets its own virtualenv.
+
+## For agents
+
+If you are an AI agent picking this up, this section is all you need. Work from the
+tool's folder, and use `uv` for everything: never `pip`, and never a hand-made venv.
+
+| Step | scrapling-scraper | ig-reel-transcript |
+|---|---|---|
+| Install (once, and after every pull) | `uv sync` | `uv sync` |
+| Browser binaries (once, only for `StealthyFetcher`/`DynamicFetcher`) | `uv run scrapling install` | – |
+| Use | write a short script, `uv run python my_script.py` | `uv run python transcribe_reel.py <url-or-shortcode>` |
+
+Rules that save you turns:
+- **Start with `Fetcher`.** Escalate to `StealthyFetcher` only when the page comes back
+  empty, 403 or as a JavaScript shell. The browser path is far slower.
+- **Read `page.markdown()` or `page.css(...)`, never `page.html_content`.** For long
+  pages, write the text to a file and grep it instead of printing it.
+- **Reels:** read **stdout only**; the `.log` file is Whisper's noise. There is no caption
+  track to look for. A private account's reel can't be fetched, so say so rather than retrying.
+- **Locked-down Windows** (AppLocker blocks executables inside the repo folder): put
+  the venv elsewhere by setting `UV_PROJECT_ENVIRONMENT` before `uv sync` / `uv run`,
+  e.g. `export UV_PROJECT_ENVIRONMENT="C:/AE/venvs/scrapling"` (git-bash) or
+  `$env:UV_PROJECT_ENVIRONMENT = "C:/AE/venvs/scrapling"` (PowerShell). **Use forward
+  slashes.** In git-bash an unquoted `C:\AE\...` loses its backslashes, and uv then
+  silently creates a venv *inside the repo* instead of failing. After `uv sync`, check
+  that no new folder appeared in the tool's folder.
+- **`PYTHONIOENCODING=utf-8`** on Windows, or non-latin page text crashes the console output.
 
 ## Why this exists
 
@@ -32,12 +60,13 @@ calls, so POSIX should work — it is simply untested.
 
 ### scrapling-scraper
 
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first.
+
 ```
 cd scrapling-scraper
-python -m venv .venv
-.venv\Scripts\pip.exe install -r requirements.txt
-.venv\Scripts\scrapling.exe install      # downloads Chromium/WebKit binaries
-.venv\Scripts\python.exe example.py      # smoke test
+uv sync                          # creates .venv and installs the pinned versions
+uv run scrapling install         # downloads Chromium/WebKit binaries (stealth/dynamic fetchers only)
+uv run python example.py         # smoke test
 ```
 
 `example.py` is a usage reference, not a CLI — real use means writing a short
@@ -58,13 +87,9 @@ print(page.markdown())                              # compact text, not raw HTML
 
 ```
 cd ig-reel-transcript
-python -m venv .venv
-.venv\Scripts\pip.exe install -r requirements.txt
-```
-
-```
-.venv\Scripts\python.exe transcribe_reel.py https://www.instagram.com/reel/SHORTCODE/
-.venv\Scripts\python.exe transcribe_reel.py SHORTCODE --model base
+uv sync
+uv run python transcribe_reel.py https://www.instagram.com/reel/SHORTCODE/
+uv run python transcribe_reel.py SHORTCODE --model base
 ```
 
 Model sizes are `tiny`, `base`, `small` (default), `medium`, `large-v3`. The

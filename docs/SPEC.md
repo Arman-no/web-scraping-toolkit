@@ -55,13 +55,15 @@ web-scraping-toolkit/
 ├── LICENSE
 ├── README.md
 ├── docs/SPEC.md
-├── scrapling-scraper/          # tool 1 — its own venv, requirements, README
+├── scrapling-scraper/          # tool 1 — its own uv project, venv and README
 │   ├── README.md
 │   ├── example.py
-│   └── requirements.txt
-└── ig-reel-transcript/         # tool 2 — its own venv, requirements, README
+│   ├── pyproject.toml
+│   └── uv.lock
+└── ig-reel-transcript/         # tool 2 — its own uv project, venv and README
     ├── README.md
-    ├── requirements.txt
+    ├── pyproject.toml
+    ├── uv.lock
     └── transcribe_reel.py
 ```
 
@@ -82,9 +84,9 @@ This is the one structural decision in the repo, and it is deliberate:
   internals and moves fast) cannot break the transcriber, and vice versa. Each
   tool can be deleted, rebuilt, or pinned to a different Python without
   touching the other.
-- **Unambiguous invocation.** Every documented command calls a venv's
-  interpreter by absolute path (`.venv\Scripts\python.exe script.py`). Nothing
-  is ever "activated", so there is no PATH state to get wrong — which matters
+- **Unambiguous invocation.** Every documented command goes through `uv run`
+  from the tool's own folder, which always uses that folder's project
+  environment. Nothing is ever "activated", so there is no PATH state to get wrong — which matters
   most when the caller is an agent rather than a human, since the agent cannot
   see which environment a previous shell left behind.
 
@@ -143,7 +145,7 @@ exit `1`.
 
 - **Network failure or DNS error** — raised from the underlying HTTP client.
 - **Browser binaries missing** — `StealthyFetcher`/`DynamicFetcher` fail if
-  `scrapling install` was never run after `pip install`. This is the most
+  `uv run scrapling install` was never run after `uv sync`. This is the most
   common setup mistake.
 - **Target still blocks the stealth fetcher.** Anti-bot systems change; a
   fetcher that worked last month may return a challenge page today. A `200`
@@ -153,9 +155,9 @@ exit `1`.
 
 ### 4.4 Dependencies and their roles
 
-`requirements.txt` declares exactly one line: `scrapling[fetchers]`. It is
-unpinned, so the resolved set moves with upstream. Resolved at the time of
-writing (22 packages):
+`pyproject.toml` declares `scrapling[fetchers]` and `markdownify` (needed by
+`page.markdown()`, which `scrapling[fetchers]` does not pull in). The exact
+resolved set is pinned in `uv.lock` (28 packages as of 2026-09-30). The main roles:
 
 | Package | Role |
 |---|---|
@@ -177,18 +179,20 @@ redistributed by this repository.
 
 ```
 cd scrapling-scraper
-python -m venv .venv
-.venv\Scripts\pip.exe install -r requirements.txt
-.venv\Scripts\scrapling.exe install      # downloads Chromium/WebKit binaries
-.venv\Scripts\python.exe example.py      # smoke test
+uv sync                          # creates .venv with the locked versions
+uv run scrapling install         # downloads Chromium/WebKit binaries
+uv run python example.py         # smoke test
 ```
 
 Upgrading:
 
 ```
-.venv\Scripts\pip.exe install --upgrade scrapling
-.venv\Scripts\scrapling.exe install      # re-sync browser binaries after upgrade
+uv lock --upgrade-package scrapling
+uv sync
+uv run scrapling install         # re-sync browser binaries after upgrade
 ```
+
+Commit the updated `uv.lock`.
 
 ---
 
@@ -265,8 +269,8 @@ traceback.
 
 ### 5.4 Dependencies and their roles
 
-`requirements.txt` declares two unpinned lines, `instaloader` and
-`faster-whisper`, which resolve to ~30 packages.
+`pyproject.toml` declares `instaloader` and `faster-whisper`; the resolved set
+is pinned in `uv.lock` (38 packages as of 2026-09-30).
 
 | Package | Role |
 |---|---|
@@ -291,13 +295,9 @@ published under the MIT licence — and caches it under the user profile
 
 ```
 cd ig-reel-transcript
-python -m venv .venv
-.venv\Scripts\pip.exe install -r requirements.txt
-```
-
-```
-.venv\Scripts\python.exe transcribe_reel.py https://www.instagram.com/reel/SHORTCODE/
-.venv\Scripts\python.exe transcribe_reel.py SHORTCODE --model base
+uv sync
+uv run python transcribe_reel.py https://www.instagram.com/reel/SHORTCODE/
+uv run python transcribe_reel.py SHORTCODE --model base
 ```
 
 Model-size trade-off, on CPU-only hardware:
@@ -339,8 +339,8 @@ precautionary, so a future credential file cannot be committed by accident.
 - A challenge or interstitial page can arrive with a `200` status. Validate
   content, not just status.
 - No authentication, no proxy support, no retry or backoff logic.
-- `requirements.txt` is unpinned, so an install today and an install in six
-  months are not the same environment.
+- Versions are pinned in `uv.lock`; `uv sync` reproduces the same environment
+  until someone deliberately runs `uv lock --upgrade`.
 
 **ig-reel-transcript**
 

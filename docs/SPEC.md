@@ -52,9 +52,12 @@ more resources than the one below it.
 
 ```
 web-scraping-toolkit/
+├── AGENT_SETUP.md              # install + troubleshooting, written for an agent
 ├── LICENSE
 ├── README.md
-├── docs/SPEC.md
+├── docs/
+│   ├── SPEC.md
+│   └── images/                 # banner.png and its source banner.html
 ├── scrapling-scraper/          # tool 1 — its own uv project, venv and README
 │   ├── README.md
 │   ├── example.py

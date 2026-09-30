@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- Source of banner.png. Render: chrome --headless=new --screenshot --window-size=1600,520 -->
+<html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}
+body{width:1600px;height:520px;overflow:hidden;background:#0f1417;font-family:"Segoe UI",sans-serif;color:#e6edf0;position:relative}
+.glow{position:absolute;right:-120px;top:-160px;width:900px;height:700px;background:radial-gradient(closest-side,rgba(56,189,168,.18),transparent)}
+.left{position:absolute;left:92px;top:110px}
+h1{font-family:"Bahnschrift","Segoe UI",sans-serif;font-weight:700;font-size:78px;color:#4fd1b5;letter-spacing:1px}
+.tag{font-size:29px;margin-top:22px}
+.sub{font-size:29px;color:#8fa3ab;margin-top:6px}
+.pills{display:flex;gap:24px;margin-top:34px}
+.pill{border:2px solid #4fd1b5;border-radius:10px;padding:10px 20px;font:22px Consolas,monospace;color:#bfeee3}
+.foot{position:absolute;left:92px;top:445px;font-size:21px;color:#6b7f87}
+.right{position:absolute;left:980px;top:95px;width:560px}
+.rung{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.bar{height:54px;border-radius:8px;display:flex;align-items:center;padding:0 20px;font:22px Consolas,monospace}
+.r1{width:230px;background:#4fd1b5;color:#0f1417;font-weight:700}
+.r2{width:340px;background:#1f3b38;color:#9fd8cb}
+.r3{width:450px;background:#1a2a2b;color:#6f9a93}
+.lbl{font-size:18px;color:#6b7f87}
+.wave{display:flex;align-items:center;gap:6px;height:80px;margin-top:40px}
+.wave i{display:block;width:8px;border-radius:4px;background:#2f5f58}
+.wave b{font:22px Consolas,monospace;color:#9fd8cb;margin-left:18px;font-weight:400}
+</style></head><body>
+<div class="glow"></div>
+<div class="left">
+  <h1>web-scraping-toolkit</h1>
+  <div class="tag">For the pages an agent's fetch comes back empty on.</div>
+  <div class="sub">bot walls &nbsp;·&nbsp; JS-rendered pages &nbsp;·&nbsp; Instagram reels</div>
+  <div class="pills"><div class="pill">47.6 KB html → 6.5 KB markdown</div><div class="pill">0.7 s · no browser</div></div>
+</div>
+<div class="foot">Scrapling · faster-whisper · uv · MIT</div>
+<div class="right">
+  <div class="rung"><div class="bar r1">Fetcher</div><span class="lbl">try first</span></div>
+  <div class="rung"><div class="bar r2">StealthyFetcher</div><span class="lbl">bot walls</span></div>
+  <div class="rung"><div class="bar r3">DynamicFetcher</div><span class="lbl">clicks</span></div>
+  <div class="wave" id="w"></div>
+</div>
+<script>
+const w=document.getElementById('w');
+[18,34,52,28,64,44,72,38,24,58,80,46,30,62,40,20,50,70,36,26,54,32].forEach(h=>{const i=document.createElement('i');i.style.height=h+'px';w.appendChild(i)});
+const b=document.createElement('b');b.textContent='reel → transcript';w.appendChild(b);
+</script>
+</body></html>

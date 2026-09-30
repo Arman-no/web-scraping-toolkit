@@ -160,14 +160,12 @@ failure modes, the dependencies' roles and known limitations.
 
 ## Author
 
-<p align="center">
-  <a href="https://github.com/Arman-no"><img src="https://github.com/Arman-no.png?size=240" width="120" alt="Arman Nouromid" /></a>
-</p>
-
 <h3 align="center">Arman Nouromid</h3>
 
 <p align="center">
-  Data engineer · building small, verifiable tools for AI coding agents
+  <b>Senior Data Engineer &amp; DWH Architect</b><br/>
+  7 years modernizing business-critical data warehouses in insurance and finance.<br/>
+  Builds small, verifiable tools for AI coding agents on the side.
 </p>
 
 <p align="center">

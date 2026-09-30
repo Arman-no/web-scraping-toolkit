@@ -65,7 +65,7 @@ flowchart LR
     B -- no --> C[Fetcher<br/>plain HTTP]
     C -- empty / 403 --> D[StealthyFetcher<br/>real browser]
     D -- needs clicks --> E[DynamicFetcher<br/>automation]
-    C --> M[page.markdown&#40;&#41;<br/>or page.css&#40;...&#41;]
+    C --> M["page.markdown()<br/>or page.css(...)"]
     D --> M
     E --> M
     R[reel URL] --> I[instaloader<br/>download] --> W[faster-whisper<br/>on CPU] --> T[transcript<br/>on stdout]

@@ -72,7 +72,10 @@ Chrome's app-bound cookie encryption means reading cookies automatically would n
 so the tool deliberately uses this one pasted cookie instead. The value is never printed, logged or
 committed.
 
-Human-like pacing (so the account stays unremarkable): a random 20-60 s pause before each
-logged-in fetch, at least a random 3-6 min gap between logged-in fetches, at most 10 per day, only
-the requested post (no browsing, likes or follows), and a 24 h stop if Instagram rate-limits or asks
-for a checkpoint. State lives in `%USERPROFILE%\.config\ig-session\state.json`.
+Human-like pacing (from a 2026-10-04 research report; Instagram flags bursts, fixed intervals,
+restarts, fresh logins, VPNs and fingerprint mismatch, not small volumes): pass several reels in ONE
+call so one session handles the batch (`transcribe_reel.py A B C ...`); logged-in reels are fetched
+with random 45-150 s gaps (plus 60-120 s extra one time in five), so 7 reels take about 10-15 min;
+Chrome's User-Agent; login checked once per batch; at most 30 logged-in reels a day; the first
+401/429/checkpoint/challenge stops the batch and pauses logged-in fetches for 24 h. State lives in
+`%USERPROFILE%\.config\ig-session\state.json`.

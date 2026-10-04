@@ -15,6 +15,7 @@ Pipeline:
 Output files land in ./downloads/<shortcode>/:
     <shortcode>.mp4        the video
     <shortcode>.txt        the transcript
+    <shortcode>.caption.txt the post caption (logged-in fetches)
     <shortcode>.log        whisper's verbose per-segment log (ignore unless debugging)
 """
 
@@ -128,6 +129,9 @@ def download_reel(shortcode: str, dest: Path, loader: instaloader.Instaloader | 
     loader.dirname_pattern = str(dest)
     post = instaloader.Post.from_shortcode(loader.context, shortcode)
     loader.download_post(post, target=dest)
+    caption = dest / f"{shortcode}.txt"          # instaloader's caption file; the transcript reuses this name
+    if caption.exists():
+        caption.replace(dest / f"{shortcode}.caption.txt")
 
     video_path = dest / f"{shortcode}.mp4"
     if not video_path.exists():
